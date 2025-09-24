@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Secure Containment Interface</title>
+
+  <link rel="preload" as="image" href="https://files.catbox.moe/iss5pg.jpg">
+
+  <style>
+    body {
+      margin:0; padding:0;
+      background: radial-gradient(circle at top, #1a1a3a, #0a0a20);
+      font-family:'Courier New', monospace;
+      color:#b8f6e5;
+      display:flex;align-items:center;justify-content:center;
+      height:100vh;
+      transition: background 0.2s ease;
+    }
+    .screen {
+      background-color:rgba(10,10,20,0.85);
+      border:1px solid #2a2a4a;
+      padding:30px;border-radius:12px;
+      text-align:center;width:350px;
+      box-shadow:0 0 20px #0ff3;
+    }
+    .avatar {
+      width:80px;height:80px;border-radius:50%;
+      margin-bottom:15px;
+      background-color:#222;
+      background-image:url('https://files.catbox.moe/iss5pg.jpg');
+      background-size:cover;
+      background-position:center;
+      border:2px solid #0ff;
+    }
+    h2 {margin:0 0 10px;color:#9ff;font-size:1rem;}
+    .warning {color:#ff4a4a;font-weight:bold;margin:15px 0;animation:blink 1s infinite;}
+    @keyframes blink {0%,50%,100%{opacity:1;}25%,75%{opacity:0;}}
+    .note{font-size:.7rem;color:#777;margin-top:10px;}
+    .hidden{display:none;}
+    .timer {font-size:1.5rem;color:#ff4a4a;margin-top:10px;}
+    ul {list-style:none;padding:0;text-align:left;}
+    li {display:flex;justify-content:space-between;margin:4px 0;}
+    .green-dot {
+      width:8px;height:8px;border-radius:50%;background:#0f0;display:inline-block;margin-right:6px;
+    }
+    /* Efek Lokasi Terdeteksi */
+    #location-detect {
+      margin-top:15px;
+      color:#ffa64a;
+      font-weight:bold;
+      animation:flash 1s infinite;
+    }
+    @keyframes flash {
+      0%,100% {opacity:1; transform:scale(1);}
+      50% {opacity:0.4; transform:scale(1.1);}
+    }
+
+    /* Efek Guncangan (Shake) dan Flashing */
+    .shake {
+      animation: shake 0.4s infinite, bgflash 0.4s infinite;
+    }
+    @keyframes shake {
+      0% { transform: translate(0,0) rotate(0deg);}
+      20% { transform: translate(-5px, 0) rotate(-1deg);}
+      40% { transform: translate(5px, 0) rotate(1deg);}
+      60% { transform: translate(-5px, 0) rotate(-1deg);}
+      80% { transform: translate(5px, 0) rotate(1deg);}
+      100% { transform: translate(0,0) rotate(0deg);}
+    }
+    @keyframes bgflash {
+      0%,100% { background: radial-gradient(circle at top, #1a1a3a, #0a0a20);}
+      50% { background: radial-gradient(circle at top, #5a0000, #000);}
+    }
+  </style>
+</head>
+<body>
+  <!-- Layar 1 -->
+  <div id="screen1" class="screen">
+    <div class="avatar"></div>
+    <h2>SECURE CONTAINMENT INTERFACE</h2>
+    <p>• monitoring jaringan • checksum • kunci asimetris</p>
+    <div class="warning">TERLAMBAT, FILE ANDA TELAH TERKUNCI!</div>
+    <p>Masukkan password untuk membuka kembali:</p>
+    <input type="password" placeholder="••••••">
+    <br><br>
+    <button onclick="playAlarm()">MASUKKAN PASSWORD</button>
+    <div class="note">catatan: ingin mendapatkan password? chat saya DM tiktok <strong>rexistore</strong></div>
+  </div>
+
+  <!-- Layar 2 -->
+  <div id="screen2" class="screen hidden">
+    <div class="avatar"></div>
+    <h2>SECURE CONTAINMENT INTERFACE</h2>
+    <p>aktif • jangan matikan perangkat • monitoring jaringan</p>
+    <div class="warning">mengunci file...</div>
+    <ul>
+      <li><span><span class="green-dot"></span>DCIM/IMG_2033.jpg</span><span>encrypted</span></li>
+      <li><span><span class="green-dot"></span>Documents/skripsi-final.docx</span><span>encrypted</span></li>
+      <li><span><span class="green-dot"></span>Downloads/nota-jan2025.pdf</span><span>encrypted</span></li>
+      <li><span><span class="green-dot"></span>Music/lagu-favorit.mp3</span><span>encrypted</span></li>
+      <li><span><span class="green-dot"></span>Videos/family-trip.mp4</span><span>encrypted</span></li>
+      <li><span><span class="green-dot"></span>Desktop/data-utang.xlsx</span><span>encrypted</span></li>
+    </ul>
+    <div id="location-detect" class="hidden">📡 Lokasi perangkat berhasil <strong>terdeteksi</strong>!</div>
+  </div>
+
+  <!-- Layar 3 -->
+  <div id="screen3" class="screen hidden">
+    <div class="avatar"></div>
+    <h2 style="color:#ff4a4a;">PERINGATAN</h2>
+    <p>Jika dalam <strong>24 jam</strong> tidak DM TikTok saya <strong>@rexistoree</strong>,<br>maka HP anda akan terkunci <strong>selamanya</strong>!</p>
+    <div>Sisa waktu:</div>
+    <div id="timer" class="timer"></div>
+  </div>
+
+  <audio id="alarm" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" preload="auto"></audio>
+
+  <script>
+    const alarm = document.getElementById('alarm');
+    function playAlarm(){
+      alarm.currentTime = 0;
+      alarm.play();
+      document.body.classList.add('shake');
+      alert('Ini hanya simulasi—tidak ada file yang terkunci.');
+    }
+
+    // Pindah ke layar 2 setelah 6 detik
+    setTimeout(()=>{
+      document.getElementById('screen1').classList.add('hidden');
+      document.getElementById('screen2').classList.remove('hidden');
+    },6000);
+
+    // Tampilkan pesan lokasi 2 detik setelah layar 2 muncul
+    setTimeout(()=>{
+      document.getElementById('location-detect').classList.remove('hidden');
+    },8000);
+
+    // Pindah ke layar 3 setelah total 11 detik
+    setTimeout(()=>{
+      document.getElementById('screen2').classList.add('hidden');
+      document.getElementById('screen3').classList.remove('hidden');
+      startCountdown(24*60*60);
+    },11000);
+
+    function startCountdown(duration){
+      let remaining=duration;
+      const timerDisplay=document.getElementById('timer');
+      const interval=setInterval(()=>{
+        const h=Math.floor(remaining/3600);
+        const m=Math.floor((remaining%3600)/60);
+        const s=remaining%60;
+        timerDisplay.textContent=`${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+        remaining--;
+        if(remaining<0)clearInterval(interval);
+      },1000);
+    }
+  </script>
+</body>
+</html>
